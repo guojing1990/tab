@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+  <style>
+  ul li.active{
+  border:1px solid red;
+  }
+  div#tabsContents > div{display:none;}
+  div#tabsContents > div.active{display:block}
+  
+  </style>
+ </head>
+ <body>
+	<ul id='tabs'>
+		<li data-tab='users'>Users</li>
+		<li data-tab='groups'>Groups</li>
+	</ul>
+	<div id='tabsContents'>
+		<div data-tab='users'>part1</div>
+		<div data-tab='groups'>part2</div>
+	</div>
+	<script src='jquery-1.11.3.js'></script>
+	<script>
+  //jQuery自定义事件，由bind 绑定，由trigger触发
+	$.fn.tabs=function(control){
+		var element=$(this);
+		control=$(control);
+		element.delegate('li','click',function(){
+			var tabName=$(this).attr('data-tab');
+			element.trigger('changeTab',tabName);
+		});
+		element.on('changeTab',function(e,tabName){
+			element.find('li').removeClass('active');
+			element.find('[data-tab='+ tabName +']').addClass('active');
+		});
+		element.on('changeTab',function(e,tabName){
+			control.find('div').removeClass('active');
+			control.find('[data-tab='+ tabName +']').addClass('active');
+		});
+		var firstName=element.find('li:first').attr('data-tab');
+		element.trigger('changeTab',firstName);
+	}
+  //调用
+	$("ul#tabs").tabs("#tabsContents");
+	</script>
+ </body>
+</html>
